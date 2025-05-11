@@ -1,1 +1,0 @@
-# nodejs-hw-mongodb
