@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
-import contactsRouter from './routes/contactsRouter.js';
+import contactsRouter from '../src/routes/contactsRouter.js';
+import errorHandler from './middlewares/errorHandler.js';
+import notFoundHandler from './middlewares/notFoundHandler.js';
 
 const app = express();
 
@@ -15,9 +17,8 @@ app.get('/', (req, res) => {
   res.send({ message: 'API is working!' });
 });
 
-app.use((req, res) => {
-  res.status(404).json({ message: 'Not found' });
-});
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 const setupServer = () => {
   const PORT = process.env.PORT || 3000;
@@ -27,7 +28,3 @@ const setupServer = () => {
 };
 
 export default setupServer;
-
-
-
-
