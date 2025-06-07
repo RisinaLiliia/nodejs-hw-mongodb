@@ -12,7 +12,10 @@ import { parseSortParams } from "../utils/parseSortParams.js";
 import { parseFilterParams } from "../utils/parseFilterParams.js";
 import { ROLES } from "../constants/index.js";
 
-export async function getAllContactsController(req, res) {
+import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+import { getEnvVar } from "../utils/getEnvVar.js";
+
+export const getAllContactsController = async (req, res) => {
   const pagination = parsePaginationParams(req.query);
   const sorting = parseSortParams(req.query);
   const filter = {
@@ -30,12 +33,10 @@ export async function getAllContactsController(req, res) {
     message: "Successfully found contacts!",
     data: result,
   });
-}
+};
 
-export async function getContactByIdController(req, res) {
+export const getContactByIdController = async (req, res) => {
   const { contactId } = req.params;
-
-  // Если админ — передаём null, чтобы снять фильтр по userId
   const userId = req.user.role === ROLES.ADMIN ? null : req.user._id;
 
   const contact = await getContactById(contactId, userId);
@@ -49,42 +50,78 @@ export async function getContactByIdController(req, res) {
     message: `Successfully found contact with id ${contactId}!`,
     data: contact,
   });
-}
+};
 
-export async function createContactController(req, res) {
-  const newContact = await createNewContact({
-    ...req.body,
-    userId: req.user._id,
-  });
+export const createContactController = async (req, res, next) => {
+  try {
+    const photo = req.file;
+    let photoUrl = null;
 
-  res.status(201).json({
-    status: 201,
-    message: "Successfully created a contact!",
-    data: newContact,
-  });
-}
+    if (photo) {
+      if (getEnvVar("ENABLE_CLOUDINARY") === "true") {
+        photoUrl = await saveFileToCloudinary(photo);
+      }
+    }
 
-export async function updateContactController(req, res) {
-  const { contactId } = req.params;
+    const newContact = await createNewContact({
+      ...req.body,
+      userId: req.user._id,
+      photo: photoUrl,
+    });
 
-  const userId = req.user.role === ROLES.ADMIN ? null : req.user._id;
-
-  const updatedContact = await updateContactById(contactId, req.body, userId);
-
-  if (!updatedContact) {
-    throw createError(404, "Contact not found");
+    res.status(201).json({
+      status: 201,
+      message: "Successfully created a contact!",
+      data: newContact,
+    });
+  } catch (error) {
+    next(error);
   }
+};
 
-  res.status(200).json({
-    status: 200,
-    message: "Successfully updated a contact!",
-    data: updatedContact,
-  });
-}
+export const updateContactController = async (req, res, next) => {
+  try {
+    const { contactId } = req.params;
+    const userId = req.user.role === ROLES.ADMIN ? null : req.user._id;
+    const photo = req.file;
+    let photoUrl;
 
-export async function deleteContactController(req, res) {
+    if (photo) {
+      if (getEnvVar("ENABLE_CLOUDINARY") === "true") {
+        photoUrl = await saveFileToCloudinary(photo);
+      }
+    }
+
+    const updateData = {
+      ...req.body,
+    };
+
+    if (photoUrl) {
+      updateData.photo = photoUrl;
+    }
+
+    const updatedContact = await updateContactById(
+      contactId,
+      updateData,
+      userId
+    );
+
+    if (!updatedContact) {
+      throw createError(404, "Contact not found");
+    }
+
+    res.status(200).json({
+      status: 200,
+      message: "Successfully updated a contact!",
+      data: updatedContact,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
-
   const userId = req.user.role === ROLES.ADMIN ? null : req.user._id;
 
   const deleted = await deleteContactById(contactId, userId);
@@ -94,4 +131,4 @@ export async function deleteContactController(req, res) {
   }
 
   res.status(204).end();
-}
+};

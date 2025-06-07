@@ -86,21 +86,20 @@ export const logoutUser = async (sessionId) => {
   await SessionsCollection.deleteOne({ _id: sessionId });
 };
 
-// скидання паролю
-
 export const requestResetToken = async (email) => {
   const user = await UsersCollection.findOne({ email });
   if (!user) {
     throw createHttpError(404, "User not found");
   }
+
   const resetToken = jwt.sign(
     {
-      sub: user._id,
+      sub: user._id.toString(),
       email,
     },
     getEnvVar("JWT_SECRET"),
     {
-      expiresIn: "15m",
+      expiresIn: "5m",
     }
   );
 
@@ -119,15 +118,23 @@ export const requestResetToken = async (email) => {
     link: `${getEnvVar("APP_DOMAIN")}/reset-password?token=${resetToken}`,
   });
 
-  await sendEmail({
-    from: getEnvVar(SMTP.SMTP_FROM),
-    to: email,
-    subject: "Reset your password",
-    html,
-  });
-};
+  try {
+    await sendEmail({
+      from: getEnvVar(SMTP.SMTP_FROM),
+      to: email,
+      subject: "Reset your password",
+      html,
+    });
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    throw createHttpError(
+      500,
+      "Failed to send the email, please try again later."
+    );
+  }
 
-// зміна паролю
+  return resetToken;
+};
 
 export const resetPassword = async (payload) => {
   let entries;
@@ -154,4 +161,6 @@ export const resetPassword = async (payload) => {
     { _id: user._id },
     { password: encryptedPassword }
   );
+
+  await SessionsCollection.deleteMany({ userId: user._id });
 };
