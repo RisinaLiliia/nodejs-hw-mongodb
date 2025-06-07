@@ -11,6 +11,7 @@ import {
   updateContactSchema,
 } from "../validation/contactsSchemas.js";
 import { ROLES } from "../constants/index.js";
+import { upload } from "../middlewares/multer.js";
 
 const router = express.Router();
 
@@ -27,6 +28,7 @@ router.get(
 
 router.post(
   "/",
+  upload.single("photo"),
   validateBody(addContactSchema),
   ctrlWrapper(contactsController.createContactController)
 );
@@ -35,6 +37,7 @@ router.patch(
   "/:contactId",
   isValidID,
   checkRoles(ROLES.ADMIN, ROLES.USER),
+  upload.single("photo"),
   validateBody(updateContactSchema),
   ctrlWrapper(contactsController.updateContactController)
 );
@@ -43,6 +46,7 @@ router.put(
   "/:contactId",
   isValidID,
   checkRoles(ROLES.ADMIN, ROLES.USER),
+  upload.single("photo"),
   validateBody(addContactSchema),
   ctrlWrapper(contactsController.updateContactController)
 );

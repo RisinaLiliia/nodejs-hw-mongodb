@@ -35,7 +35,9 @@ export const getContactById = (id, userId) => {
   return Contact.findById(id);
 };
 
-export const createNewContact = (data) => Contact.create(data);
+export const createNewContact = (data) => {
+  return Contact.create(data);
+};
 
 export const updateContactById = (id, data, userId) => {
   if (userId) {
