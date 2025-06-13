@@ -11,6 +11,11 @@ import { sendEmail } from "../utils/sendMail.js";
 import handlebars from "handlebars";
 import path from "node:path";
 import fs from "node:fs/promises";
+import {
+  getFullNameFromGoogleTokenPayload,
+  validateCode,
+} from "../utils/googleOAuth2.js";
+import crypto from "crypto";
 
 export const registerUser = async (payload) => {
   const existingUser = await UsersCollection.findOne({ email: payload.email });
@@ -168,4 +173,39 @@ export const resetPassword = async (payload) => {
   );
 
   await SessionsCollection.deleteMany({ userId: user._id });
+};
+
+export const loginOrSignupWithGoogle = async (code) => {
+  const loginTicket = await validateCode(code);
+  const payload = loginTicket.getPayload();
+  if (!payload) throw createHttpError(401);
+
+  let user = await UsersCollection.findOne({ email: payload.email });
+
+  if (!user) {
+    const randomPassword = crypto.randomBytes(30).toString("base64");
+    const password = await bcrypt.hash(randomPassword, 10);
+
+    user = await UsersCollection.create({
+      email: payload.email,
+      name: getFullNameFromGoogleTokenPayload(payload),
+      password,
+      role: "user",
+    });
+  }
+
+  await SessionsCollection.deleteMany({ userId: user._id });
+
+  const accessToken = crypto.randomBytes(30).toString("base64");
+  const refreshToken = crypto.randomBytes(30).toString("base64");
+
+  const newSession = await SessionsCollection.create({
+    userId: user._id,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: new Date(Date.now() + 10 * 60 * 1000),
+    refreshTokenValidUntil: new Date(Date.now() + 24 * 60 * 60 * 1000),
+  });
+
+  return newSession;
 };

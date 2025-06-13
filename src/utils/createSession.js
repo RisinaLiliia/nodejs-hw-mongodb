@@ -4,7 +4,7 @@ import { FIFTEEN_MINUTES, ONE_DAY } from "../constants/index.js";
 export const createSession = async (userId, accessToken, refreshToken) => {
   const now = Date.now();
 
-  SessionsCollection.deleteOne({ userId }).catch(console.error);
+  await SessionsCollection.deleteOne({ userId }).catch(console.error);
 
   const session = await SessionsCollection.create({
     userId,
