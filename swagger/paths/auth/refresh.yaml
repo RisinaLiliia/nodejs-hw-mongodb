@@ -1,0 +1,9 @@
+tags:
+  - Auth
+summary: Refresh user session using cookies
+operationId: refreshSession
+responses:
+  "200":
+    $ref: ../../components/responses/LoginSuccess.yaml
+  "401":
+    $ref: ../../components/responses/Unauthorized.yaml

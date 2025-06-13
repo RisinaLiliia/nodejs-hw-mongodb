@@ -1,0 +1,7 @@
+name: contactId
+in: path
+required: true
+description: The ID of the contact
+schema:
+  type: string
+  format: uuid

@@ -1,0 +1,15 @@
+tags:
+  - Auth
+summary: Confirm Google OAuth2 login/signup
+operationId: loginWithGoogle
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/GoogleOAuthCode.yaml
+responses:
+  "200":
+    $ref: ../../components/responses/LoginSuccess.yaml
+  "401":
+    $ref: ../../components/responses/Unauthorized.yaml

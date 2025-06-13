@@ -1,0 +1,38 @@
+
+  tags:
+    - Contacts
+  summary: Create a new contact
+  operationId: createContact
+  description: Creates a new contact and returns the created object.
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            phoneNumber:
+              type: string
+            email:
+              type: string
+            contactType:
+              type: string
+              enum: [work, home, personal]
+            isFavourite:
+              type: boolean
+            photo:
+              type: string
+              format: binary
+  responses:
+    '201':
+      description: Contact created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Contact.yaml"
+    '400':
+      $ref: "../../components/responses/BadRequest.yaml"

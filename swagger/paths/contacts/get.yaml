@@ -1,0 +1,61 @@
+tags:
+  - Contacts
+summary: Get all contacts
+operationId: getAllContacts
+description: Returns a list of all contacts with optional filtering, pagination, and sorting.
+security:
+  - bearerAuth: []
+parameters:
+  - name: page
+    in: query
+    description: Page number
+    schema:
+      type: integer
+  - name: perPage
+    in: query
+    description: Contacts per page
+    schema:
+      type: integer
+  - name: sortBy
+    in: query
+    description: Sort field
+    schema:
+      type: string
+  - name: sortOrder
+    in: query
+    description: Sort order (asc or desc)
+    schema:
+      type: string
+      enum: [asc, desc]
+  - name: isFavourite
+    in: query
+    schema:
+      type: boolean
+  - name: contactType
+    in: query
+    schema:
+      type: string
+      enum: [work, home, personal]
+responses:
+  "200":
+    description: List of contacts
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+            message:
+              type: string
+            data:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../../components/schemas/Contact.yaml"
+  "401":
+    $ref: "../../components/responses/Unauthorized.yaml"
+  "500":
+    $ref: ../../components/responses/InternalServerError.yaml
