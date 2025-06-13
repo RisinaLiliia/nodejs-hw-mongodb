@@ -1,0 +1,15 @@
+tags:
+  - Auth
+summary: Reset user password
+operationId: resetPassword
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/ResetPassword.yaml
+responses:
+  "200":
+    $ref: ../../components/responses/Success.yaml
+  "401":
+    $ref: ../../components/responses/Unauthorized.yaml

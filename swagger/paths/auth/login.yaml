@@ -1,0 +1,15 @@
+tags:
+  - Auth
+summary: Login user and create session
+operationId: loginUser
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas/LoginUser.yaml
+responses:
+  "200":
+    $ref: ../../components/responses/LoginSuccess.yaml
+  "401":
+    $ref: ../../components/responses/Unauthorized.yaml
