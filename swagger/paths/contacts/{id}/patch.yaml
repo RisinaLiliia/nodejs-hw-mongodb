@@ -13,6 +13,10 @@ requestBody:
     multipart/form-data:
       schema:
         type: object
+        required:
+          - name
+          - phoneNumber
+          - contactType
         properties:
           name:
             type: string
@@ -20,6 +24,7 @@ requestBody:
             type: string
           email:
             type: string
+            format: email
           contactType:
             type: string
             enum: [work, home, personal]
