@@ -10,4 +10,6 @@ properties:
   password:
     type: string
     format: password
+    minLength: 6
+    pattern: "^[a-zA-Z0-9]{6,30}$"
     example: mySecret123

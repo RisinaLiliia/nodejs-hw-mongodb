@@ -1,19 +1,30 @@
-
-  tags:
-    - Contacts
-  summary: Get contact by ID
-  operationId: getContactById
-  description: Returns a single contact by its ID.
-  security:
-    - bearerAuth: []
-  parameters:
-    - $ref: "../../../components/parameters/ContactId.yaml"
-  responses:
-    '200':
-      description: Contact found
-      content:
-        application/json:
-          schema:
-            $ref: "../../../components/schemas/Contact.yaml"
-    '404':
-      $ref: "../../../components/responses/ContactNotFound.yaml"
+tags:
+  - Contacts
+summary: Get contact by ID
+operationId: getContactById
+description: Returns a single contact by its ID.
+security:
+  - bearerAuth: []
+parameters:
+  - $ref: "../../../components/parameters/ContactId.yaml"
+responses:
+  "200":
+    description: Contact found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: string
+              example: success
+            message:
+              type: string
+              example: Contact found
+            data:
+              type: object
+              properties:
+                contact:
+                  $ref: "../../../components/schemas/Contact.yaml"
+  "404":
+    $ref: "../../../components/responses/ContactNotFound.yaml"

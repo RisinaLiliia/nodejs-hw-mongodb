@@ -12,6 +12,9 @@
   "servers": [
     {
       "url": "http://127.0.0.1:3000"
+    },
+    {
+      "url": "https://nodejs-hw-mongodb-5-0tpb.onrender.com"
     }
   ],
   "security": [
@@ -156,15 +159,23 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "name",
+                  "phoneNumber",
+                  "contactType"
+                ],
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "John Doe"
                   },
                   "phoneNumber": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "+123456789"
                   },
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "john@example.com"
                   },
                   "contactType": {
                     "type": "string",
@@ -172,10 +183,12 @@
                       "work",
                       "home",
                       "personal"
-                    ]
+                    ],
+                    "example": "personal"
                   },
                   "isFavourite": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": false
                   },
                   "photo": {
                     "type": "string",
@@ -227,7 +240,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Contact"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contact found"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "contact": {
+                          "$ref": "#/components/schemas/Contact"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -296,7 +327,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Contact"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contact updated"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "contact": {
+                          "$ref": "#/components/schemas/Contact"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -578,6 +627,12 @@
     "schemas": {
       "Contact": {
         "type": "object",
+        "required": [
+          "name",
+          "phoneNumber",
+          "contactType",
+          "userId"
+        ],
         "properties": {
           "_id": {
             "type": "string",
@@ -585,14 +640,19 @@
           },
           "name": {
             "type": "string",
+            "minLength": 3,
+            "maxLength": 20,
             "example": "John Doe"
           },
           "phoneNumber": {
             "type": "string",
+            "minLength": 3,
+            "maxLength": 20,
             "example": "+123456789"
           },
           "email": {
             "type": "string",
+            "format": "email",
             "example": "john@example.com"
           },
           "photo": {
@@ -601,6 +661,7 @@
           },
           "isFavourite": {
             "type": "boolean",
+            "default": false,
             "example": false
           },
           "contactType": {
@@ -610,6 +671,7 @@
               "home",
               "personal"
             ],
+            "default": "personal",
             "example": "personal"
           },
           "userId": {
@@ -618,11 +680,13 @@
           },
           "createdAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "example": "2024-06-14T08:25:43.511Z"
           },
           "updatedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "example": "2024-06-14T08:25:43.511Z"
           }
         }
       },
@@ -642,6 +706,7 @@
             "type": "string",
             "format": "password",
             "minLength": 6,
+            "pattern": "^[a-zA-Z0-9]{6,30}$",
             "example": "mySecret123"
           }
         }
@@ -661,6 +726,8 @@
           "password": {
             "type": "string",
             "format": "password",
+            "minLength": 6,
+            "pattern": "^[a-zA-Z0-9]{6,30}$",
             "example": "mySecret123"
           }
         }
@@ -681,20 +748,18 @@
       "ResetPassword": {
         "type": "object",
         "required": [
-          "token",
-          "newPassword"
+          "password",
+          "token"
         ],
         "properties": {
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "newPassword123"
+          },
           "token": {
             "type": "string",
-            "description": "Reset token sent by email",
-            "example": "abc123def456"
-          },
-          "newPassword": {
-            "type": "string",
-            "format": "password",
-            "minLength": 6,
-            "example": "newPassword2024"
+            "example": "resetTokenStringHere"
           }
         }
       },
@@ -854,23 +919,6 @@
                     "accessToken": {
                       "type": "string",
                       "example": "jwt.token.here"
-                    },
-                    "refreshToken": {
-                      "type": "string",
-                      "example": "refresh.jwt.token"
-                    },
-                    "user": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "example": "60f7b2b4c8e4e04abc123456"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "user@example.com"
-                        }
-                      }
                     }
                   }
                 }

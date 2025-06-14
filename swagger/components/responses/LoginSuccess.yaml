@@ -16,15 +16,3 @@ content:
             accessToken:
               type: string
               example: jwt.token.here
-            refreshToken:
-              type: string
-              example: refresh.jwt.token
-            user:
-              type: object
-              properties:
-                id:
-                  type: string
-                  example: 60f7b2b4c8e4e04abc123456
-                email:
-                  type: string
-                  example: user@example.com
