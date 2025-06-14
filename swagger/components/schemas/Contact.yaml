@@ -1,34 +1,47 @@
 type: object
+required:
+  - name
+  - phoneNumber
+  - contactType
+  - userId
 properties:
   _id:
     type: string
     example: "60c72b2f9b1e8b3b2c8e4f19"
   name:
     type: string
+    minLength: 3
+    maxLength: 20
     example: "John Doe"
   phoneNumber:
     type: string
+    minLength: 3
+    maxLength: 20
     example: "+123456789"
   email:
     type: string
+    format: email
     example: "john@example.com"
   photo:
     type: string
-    # nullable: true
     example: "https://res.cloudinary.com/image.jpg"
   isFavourite:
     type: boolean
+    default: false
     example: false
   contactType:
     type: string
     enum: [work, home, personal]
-    example: "personal"
+    default: personal
+    example: personal
   userId:
     type: string
     example: "60c72b2f9b1e8b3b2c8e4f12"
   createdAt:
     type: string
     format: date-time
+    example: "2024-06-14T08:25:43.511Z"
   updatedAt:
     type: string
     format: date-time
+    example: "2024-06-14T08:25:43.511Z"

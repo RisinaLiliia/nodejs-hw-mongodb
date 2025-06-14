@@ -1,38 +1,46 @@
-
-  tags:
-    - Contacts
-  summary: Create a new contact
-  operationId: createContact
-  description: Creates a new contact and returns the created object.
-  security:
-    - bearerAuth: []
-  requestBody:
-    required: true
+tags:
+  - Contacts
+summary: Create a new contact
+operationId: createContact
+description: Creates a new contact and returns the created object.
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - phoneNumber
+          - contactType
+        properties:
+          name:
+            type: string
+            example: John Doe
+          phoneNumber:
+            type: string
+            example: "+123456789"
+          email:
+            type: string
+            example: "john@example.com"
+          contactType:
+            type: string
+            enum: [work, home, personal]
+            example: personal
+          isFavourite:
+            type: boolean
+            example: false
+          photo:
+            type: string
+            format: binary
+responses:
+  "201":
+    description: Contact created
     content:
-      multipart/form-data:
+      application/json:
         schema:
-          type: object
-          properties:
-            name:
-              type: string
-            phoneNumber:
-              type: string
-            email:
-              type: string
-            contactType:
-              type: string
-              enum: [work, home, personal]
-            isFavourite:
-              type: boolean
-            photo:
-              type: string
-              format: binary
-  responses:
-    '201':
-      description: Contact created
-      content:
-        application/json:
-          schema:
-            $ref: "../../components/schemas/Contact.yaml"
-    '400':
-      $ref: "../../components/responses/BadRequest.yaml"
+          $ref: "../../components/schemas/Contact.yaml"
+  "400":
+    $ref: "../../components/responses/BadRequest.yaml"
