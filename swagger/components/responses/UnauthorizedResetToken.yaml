@@ -1,4 +1,4 @@
-description: Bad request due to invalid input
+description: Reset token is expired or invalid
 content:
   application/json:
     schema:
@@ -6,7 +6,7 @@ content:
       properties:
         status:
           type: integer
-          example: 400
+          example: 401
         message:
           type: string
-          example: ID should be an ObjectId
+          example: Token is expired or invalid.

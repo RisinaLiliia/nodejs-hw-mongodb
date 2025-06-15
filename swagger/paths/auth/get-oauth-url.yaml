@@ -21,17 +21,9 @@ responses:
               properties:
                 url:
                   type: string
-                  example: https://accounts.google.com/o/oauth2/v2/auth?...
+                  format: uri
+                  example: https://accounts.google.com/o/oauth2/v2/auth?scope=...etc
   "400":
-    description: Bad Request - Something went wrong
-    content:
-      application/json:
-        schema:
-          type: object
-          properties:
-            status:
-              type: integer
-              example: 400
-            message:
-              type: string
-              example: Bad request
+    $ref: ../../components/responses/BadRequest.yaml
+  "500":
+    $ref: "../../components/responses/InternalServerError.yaml"

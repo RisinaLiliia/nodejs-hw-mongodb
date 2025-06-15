@@ -10,6 +10,26 @@ requestBody:
         $ref: ../../components/schemas/LoginUser.yaml
 responses:
   "200":
-    $ref: ../../components/responses/LoginSuccess.yaml
+    description: Login successful
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Login successfully
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: TaJJOUHOgBZC/ykGnSeHIlrf0wTAQMs+cWKsHxFk
+
   "401":
-    $ref: ../../components/responses/Unauthorized.yaml
+    $ref: ../../components/responses/UnauthorizedLogin.yaml
+  "500":
+    $ref: "../../components/responses/InternalServerError.yaml"

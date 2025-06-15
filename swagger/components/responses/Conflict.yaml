@@ -9,4 +9,4 @@ content:
           example: 409
         message:
           type: string
-          example: Email already in use
+          example: Email in use

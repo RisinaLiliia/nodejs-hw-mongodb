@@ -12,4 +12,6 @@ responses:
   "200":
     $ref: ../../components/responses/LoginSuccess.yaml
   "401":
-    $ref: ../../components/responses/Unauthorized.yaml
+    $ref: ../../components/responses/UnauthorizedToken.yaml
+  "500":
+    $ref: "../../components/responses/InternalServerError.yaml"

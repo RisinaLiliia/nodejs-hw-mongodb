@@ -10,6 +10,22 @@ requestBody:
         $ref: ../../components/schemas/ResetPassword.yaml
 responses:
   "200":
-    $ref: ../../components/responses/Success.yaml
+    description: Password successfully reset
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Password has been successfully reset.
+            data:
+              type: object
+              example: {}
   "401":
-    $ref: ../../components/responses/Unauthorized.yaml
+    $ref: ../../components/responses/UnauthorizedResetToken.yaml
+  "500":
+    $ref: "../../components/responses/InternalServerError.yaml"

@@ -8,4 +8,6 @@ responses:
   "204":
     description: Successfully logged out
   "401":
-    $ref: ../../components/responses/Unauthorized.yaml
+    $ref: ../../components/responses/UnauthorizedToken.yaml
+  "500":
+    $ref: "../../components/responses/InternalServerError.yaml"

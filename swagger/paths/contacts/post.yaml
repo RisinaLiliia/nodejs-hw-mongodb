@@ -41,6 +41,18 @@ responses:
     content:
       application/json:
         schema:
-          $ref: "../../components/schemas/Contact.yaml"
-  "400":
-    $ref: "../../components/responses/BadRequest.yaml"
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a contact!
+            data:
+              $ref: "../../components/schemas/Contact.yaml"
+
+  "401":
+    $ref: ../../components/responses/UnauthorizedResetToken.yaml
+  "500":
+    $ref: "../../components/responses/InternalServerError.yaml"

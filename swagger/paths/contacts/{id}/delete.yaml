@@ -12,3 +12,5 @@ responses:
     description: Contact deleted successfully
   "404":
     $ref: "../../../components/responses/ContactNotFound.yaml"
+  "500":
+    $ref: "../../../components/responses/InternalServerError.yaml"
