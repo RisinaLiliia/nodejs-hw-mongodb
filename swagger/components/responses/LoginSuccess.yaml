@@ -1,4 +1,4 @@
-description: Login successful
+description: Successful login response
 content:
   application/json:
     schema:
@@ -9,10 +9,10 @@ content:
           example: 200
         message:
           type: string
-          example: Login successful
+          example: Successfully logged in via Google OAuth!
         data:
           type: object
           properties:
             accessToken:
               type: string
-              example: jwt.token.here
+              example: 3Tnyeh0n86PBVJMEMSXkInp7cfGjOgoRWREMA6M7

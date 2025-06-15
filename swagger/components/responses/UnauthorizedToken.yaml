@@ -9,4 +9,4 @@ content:
           example: 401
         message:
           type: string
-          example: Unauthorized
+          example: Please provide Authorization header.

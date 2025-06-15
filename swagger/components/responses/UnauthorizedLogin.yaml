@@ -1,0 +1,21 @@
+description: Unauthorized - Login failed
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+    examples:
+      invalidCredentials:
+        summary: Wrong email or password
+        value:
+          status: 401
+          message: Email or password is incorrect
+      missingBearer:
+        summary: Missing or malformed token
+        value:
+          status: 401
+          message: Auth header should be of type Bearer

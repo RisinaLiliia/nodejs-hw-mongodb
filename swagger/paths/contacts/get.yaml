@@ -2,43 +2,25 @@ tags:
   - Contacts
 summary: Get all contacts
 operationId: getAllContacts
-description: Returns a list of all contacts with optional filtering, pagination, and sorting.
+description: Returns a list of contacts with pagination metadata.
 security:
   - bearerAuth: []
 parameters:
-  - name: page
-    in: query
-    description: Page number
+  - in: query
+    name: page
     schema:
       type: integer
-  - name: perPage
-    in: query
-    description: Contacts per page
+      default: 1
+    description: Page number for pagination.
+  - in: query
+    name: perPage
     schema:
       type: integer
-  - name: sortBy
-    in: query
-    description: Sort field
-    schema:
-      type: string
-  - name: sortOrder
-    in: query
-    description: Sort order (asc or desc)
-    schema:
-      type: string
-      enum: [asc, desc]
-  - name: isFavourite
-    in: query
-    schema:
-      type: boolean
-  - name: contactType
-    in: query
-    schema:
-      type: string
-      enum: [work, home, personal]
+      default: 10
+    description: Number of contacts per page.
 responses:
   "200":
-    description: List of contacts
+    description: Successfully found contacts
     content:
       application/json:
         schema:
@@ -46,8 +28,10 @@ responses:
           properties:
             status:
               type: integer
+              example: 200
             message:
               type: string
+              example: Successfully found contacts!
             data:
               type: object
               properties:
@@ -55,7 +39,25 @@ responses:
                   type: array
                   items:
                     $ref: "../../components/schemas/Contact.yaml"
+                page:
+                  type: integer
+                  example: 1
+                perPage:
+                  type: integer
+                  example: 10
+                totalItems:
+                  type: integer
+                  example: 5
+                totalPages:
+                  type: integer
+                  example: 1
+                hasPreviousPage:
+                  type: boolean
+                  example: false
+                hasNextPage:
+                  type: boolean
+                  example: false
   "401":
-    $ref: "../../components/responses/Unauthorized.yaml"
+    $ref: ../../components/responses/UnauthorizedResetToken.yaml
   "500":
-    $ref: ../../components/responses/InternalServerError.yaml
+    $ref: "../../components/responses/InternalServerError.yaml"
