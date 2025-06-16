@@ -18,6 +18,41 @@ parameters:
       type: integer
       default: 10
     description: Number of contacts per page.
+
+  - name: sortBy
+    in: query
+    description: Field to sort by (e.g., name, createdAt)
+    required: false
+    schema:
+      type: string
+      example: name
+
+  - name: sortOrder
+    in: query
+    description: Sort order (asc or desc)
+    required: false
+    schema:
+      type: string
+      enum: [asc, desc]
+      example: asc
+
+  - name: isFavourite
+    in: query
+    description: Filter by favourite status
+    required: false
+    schema:
+      type: boolean
+      example: true
+
+  - name: contactType
+    in: query
+    description: Filter by contact type
+    required: false
+    schema:
+      type: string
+      enum: [work, home, personal]
+      example: personal
+
 responses:
   "200":
     description: Successfully found contacts
